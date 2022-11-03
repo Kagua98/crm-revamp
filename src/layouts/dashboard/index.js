@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 // @mui material components
 import Grid from "@mui/material/Grid";
 
@@ -33,9 +18,26 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import {useSelector} from "react-redux";
+
+import Clients from "../tables/index"
 
 function Dashboard() {
+    var numCustomers = 0;
+    var numDevices = 0;
   const { sales, tasks } = reportsLineChartData;
+
+
+    const clients = useSelector((state) => state.customers);
+    const devices = useSelector((state) => state.devices);
+
+    for (let i = 0; i < devices.length; i++) {
+        numDevices = devices[i].num_devices;
+    }
+
+    for (let x = 0; x < clients.length; x++) {
+        numCustomers = clients[x].num_customers;
+    }
 
   return (
     <DashboardLayout>
@@ -46,9 +48,9 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="dark"
-                icon="weekend"
-                title="Bookings"
-                count={281}
+                icon="android"
+                title="Devices"
+                count={numDevices}
                 percentage={{
                   color: "success",
                   amount: "+55%",
@@ -61,8 +63,8 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
+                title="Clients"
+                count={numCustomers}
                 percentage={{
                   color: "success",
                   amount: "+3%",
@@ -77,7 +79,7 @@ function Dashboard() {
                 color="success"
                 icon="store"
                 title="Revenue"
-                count="34k"
+                count="KSh 10000"
                 percentage={{
                   color: "success",
                   amount: "+1%",
@@ -90,9 +92,9 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="primary"
-                icon="person_add"
-                title="Followers"
-                count="+91"
+                icon="room"
+                title="Locations"
+                count={numCustomers}
                 percentage={{
                   color: "success",
                   amount: "",
@@ -109,8 +111,8 @@ function Dashboard() {
                 <ReportsBarChart
                   color="info"
                   title="website views"
-                  description="Last Campaign Performance"
-                  date="campaign sent 2 days ago"
+                  description="Social Media Presence"
+                  date="last posted 1 day ago"
                   chart={reportsBarChartData}
                 />
               </MDBox>
@@ -119,13 +121,13 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="success"
-                  title="daily sales"
+                  title="monthly sales"
                   description={
                     <>
-                      (<strong>+15%</strong>) increase in today sales.
+                      (<strong>+5%</strong>) increase in monthly sales.
                     </>
                   }
-                  date="updated 4 min ago"
+                  date="updated today"
                   chart={sales}
                 />
               </MDBox>
@@ -134,8 +136,8 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="dark"
-                  title="completed tasks"
-                  description="Last Campaign Performance"
+                  title="completed deliveries"
+                  description="Successful deliveries to clients"
                   date="just updated"
                   chart={tasks}
                 />

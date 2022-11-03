@@ -23,6 +23,9 @@ import MDPagination from "components/MDPagination";
 // Material Dashboard 2 React example components
 import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
 import DataTableBodyCell from "examples/Tables/DataTable/DataTableBodyCell";
+import {useDispatch} from "react-redux";
+import {deleteCustomer} from "../../../features/customerSlice";
+import {unwrapResult} from "@reduxjs/toolkit";
 
 
 function DataTable({
@@ -47,6 +50,20 @@ function DataTable({
     useSortBy,
     usePagination
   );
+
+  const dispatch = useDispatch();
+  const handleDelete = (id) => {
+    // setData(data.filter((item) => item.id !== id));
+    console.log(typeof id);
+    dispatch(deleteCustomer({ id }))
+        .then(unwrapResult)
+        .then(() => {
+          alert("Client Deleted Successfully!");
+        })
+        .catch(() => {
+          alert("Client Not Deleted!");
+        });
+  };
 
   const {
     getTableProps,

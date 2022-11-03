@@ -26,8 +26,16 @@ import Clients from "layouts/tables";
 import Devices from "layouts/devices";
 import SignIn from "layouts/authentication/sign-in";
 
+import NewDevices from "./layouts/devices/new-devices/NewDevices";
+import NewClient from "./layouts/tables/new-clients/NewClient";
+import UpdateClient from "./layouts/tables/update-client/UpdateClient";
+import UpdateDevice from "./layouts/devices/Update Device/UpdateDevice";
+import Var from "./layouts/var";
+import Var_devices from "./layouts/var_devices";
+
 // @mui icons
 import Icon from "@mui/material/Icon";
+import NotFound from "./layouts/not-found";
 
 const routes = [
   {
@@ -50,9 +58,26 @@ const routes = [
     type: "collapse",
     name: "Devices",
     key: "devices",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
+    icon: <Icon fontSize="small">phone_android</Icon>,
     route: "/devices",
     component: <Devices />,
+  },
+  {
+    type: "collapse",
+    name: "VAR",
+    key: "var",
+    icon: <Icon fontSize="small">diversity_3</Icon>,
+    route: "/var",
+    component: <Var />
+  },
+
+  {
+    type: "collapse",
+    name: "VAR Devices",
+    key: "var-devices",
+    icon: <Icon fontSize="small">offline_share</Icon>,
+    route: "/var-devices",
+    component: <Var_devices />
   },
   {
     type: "collapse",
@@ -62,6 +87,47 @@ const routes = [
     route: "/authentication/sign-in",
     component: <SignIn />,
   },
+  {
+    name: "New Device",
+    key: "new-devices",
+    icon: <Icon fontSize="small">new-devices</Icon>,
+    route: "/devices/new-devices",
+    component: <NewDevices />,
+  },
+  {
+    name: "New Client",
+    key: "new-client",
+    icon: <Icon fontSize="small">new-client</Icon>,
+    route: "/clients/new-client",
+    component: <NewClient />,
+  },
+
+  {
+    name: "Update Client",
+    key: "update-client",
+    icon: <Icon fontSize="small">update-client</Icon>,
+    route: "/clients/update-client",
+    component: <UpdateClient />,
+  },
+
+  {
+    name: "Update Device",
+    key: "update-device",
+    icon: <Icon fontSize="small">update-device</Icon>,
+    route: "/devices/update-device",
+    component: <UpdateDevice />,
+  },
+
+  {
+    name: "Not Found",
+    key: "not-found",
+    icon: <Icon fontSize="small">error</Icon>,
+    route: "/not-found",
+    component: <NotFound />,
+  },
+
+
+
 ];
 
 export default routes;

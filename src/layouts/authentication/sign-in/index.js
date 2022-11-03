@@ -1,8 +1,3 @@
-/**
- * Matrix Telematics CRM React
- =========================================================
- */
-
 import { useState } from "react";
 
 // @mui material components
@@ -20,11 +15,48 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import {useNavigate} from "react-router-dom";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+
+  const [password, setPass] = useState();
+  const [email, setEmail] = useState();
+  const navigate = useNavigate();
+
+  const submit = async (e) => {
+    e.preventDefault();
+    let loginUrl = "https://matrixtelematic.herokuapp.com/api/auth/login/";
+    await fetch(loginUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+          if (Object.keys(data).length === 1) {
+            alert("Invalid Email or Password!");
+          } else if (Object.keys(data).length === 3) {
+            alert("Operation Successful!");
+            localStorage.setItem("authTokens", JSON.stringify(data));
+            navigate("/dashboard");
+          }
+        })
+        .catch((error) => {
+          alert(error);
+        });
+  };
+
+
 
   return (
     <BasicLayout image={bgImage}>
@@ -47,13 +79,15 @@ function Basic() {
             Sign in below
           </MDTypography>
         </MDBox>
-        <MDBox pt={4} pb={3} px={3}>
+        <MDBox pt={4} pb={3} px={3} onSubmit={submit}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput type="email" label="Email" fullWidth
+                       onChange={(e) => setEmail(e.target.value)}/>
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput type="password" label="Password" fullWidth
+                       onChange={(e) => setPass(e.target.value)}/>
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />

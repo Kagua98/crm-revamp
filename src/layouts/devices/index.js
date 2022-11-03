@@ -9,36 +9,38 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
-// Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
-
 // Device page components
 import Card from "@mui/material/Card";
 import MDTypography from "../../components/MDTypography";
-import DataTable from "../../examples/Tables/DataTable";
 
 import axios from "axios";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import DeviceItem from "./DeviceItem";
-import { setDevices } from "../../redux/actions/DeviceActions";
+import Datatable from "./Datatable";
+import {deviceColumns} from "../../datatablesource";
+import {getDevices} from "../../features/deviceSlice";
+import {useNavigate} from "react-router-dom";
+import Button from "@mui/material/Button";
+
 
 function Devices() {
-    const devices = useSelector((state) => state);
-    const dispatch = useDispatch();
 
-    const fetchDevices = async () =>{
-        const response = await axios
-            .get("https://matrixtelematic.herokuapp.com/info/devices/")
-            .catch((err) => {
-                console.log("Err", err);
-            });
-        dispatch(setDevices(response.data));
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getDevices());
+    }, [dispatch]);
+
+    const devices = useSelector((state) => state.devices);
+
+    const btnClick = () => {
+        navigate("new-devices");
     };
 
-    useEffect(() => {
-        fetchDevices();
-    }, []);
+    var numDevices = 0;
+    for (let i = 0; i < devices.length; i++) {
+        numDevices = devices[i].num_devices;
+    }
 
     return (
         <DashboardLayout>
@@ -54,7 +56,7 @@ function Devices() {
                                         icon="pending"
                                         title="Pending"
                                         description="Devices In transit"
-                                        value="100"
+                                        value="0"
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6} xl={3}>
@@ -63,7 +65,7 @@ function Devices() {
                                         icon="done"
                                         title="Delivered"
                                         description="Devices delivered"
-                                        value="500"
+                                        value="249"
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6} xl={3}>
@@ -72,7 +74,7 @@ function Devices() {
                                         icon="error"
                                         title="Error"
                                         description="Returned Devices"
-                                        value="20"
+                                        value="0"
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6} xl={3}>
@@ -80,8 +82,8 @@ function Devices() {
                                         color="dark"
                                         icon="list"
                                         title="Devices"
-                                        description="All devices"
-                                        value="1000"
+                                        description="Add Device"
+                                        value={numDevices}
                                     />
                                 </Grid>
                             </Grid>
@@ -105,13 +107,24 @@ function Devices() {
                                     <MDTypography variant="h6" color="white">
                                         Devices List
                                     </MDTypography>
+
                                 </MDBox>
 
-                                {/* Where Data is Displayed */}
-                                {/* TODO(Display Devices) */}
+                                <Datatable
+                                    columns={deviceColumns}
+                                    rows={devices}
+                                    btn={"New Device"}
+                                    btnClick={btnClick}
+                                />
 
-
-                                <DeviceItem />
+                                <div>
+                                    <p>
+                                        <span style={{"color":"transparent"}}>uu</span>
+                                    </p>
+                                    <p>
+                                        <span style={{"color":"transparent"}}>uu</span>
+                                    </p>
+                                </div>
 
                             </Card>
                         </Grid>

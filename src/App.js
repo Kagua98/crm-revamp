@@ -37,6 +37,7 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 // Images
 import brandWhite from "assets/images/favicon.png";
 import brandDark from "assets/images/logo.png";
+import NewDevices from "./layouts/devices/new-devices/NewDevices";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -176,7 +177,11 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to="/not-found" />} />
+        <Route path="new-devices" element={<Navigate to="/new-devices" />} />
+        <Route path="new-client" element={<Navigate to="/new-client" />} />
+        <Route path="update-client" element={<Navigate to="/update-client" />} />
+        <Route path="update-device" element={<Navigate to="/update-device" />} />
       </Routes>
     </ThemeProvider>
   );

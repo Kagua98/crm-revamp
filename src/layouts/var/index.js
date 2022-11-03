@@ -16,34 +16,34 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {getCustomers} from "../../features/customerSlice";
 import {getDevices} from "../../features/deviceSlice";
-import {clientColumns, deviceColumns} from "../../datatablesource";
+import {clientColumns, deviceColumns, varColumns} from "../../datatablesource";
 import Datatable from "./Datatable";
 import Modal from "react-bootstrap/Modal";
+import {getVARs} from "../../features/varSlice";
+import {getVARDevices} from "../../features/varDeviceSlice";
+
+function Var(){
 
 
-function Clients() {
     const [modalShow, setModalShow] = useState(false);
-    const [clientDevices, setClients] = useState([]);
+    const [varDevices, setVARS] = useState([]);
     const [finalClickInfo, setFinalClickInfo] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getCustomers());
-        dispatch(getDevices());
+        dispatch(getVARs());
+        dispatch(getVARDevices());
     }, [dispatch]);
 
-    const clients = useSelector((state) => state.customers);
-    const devices = useSelector((state) => state.devices);
-
-
-    //const [clientEmail,setEmail] = useState("")
+    const vars = useSelector((state) => state.vars);
+    const devices = useSelector((state) => state.varDevices);
 
     const handleOnCellClick = (params) => {
         setFinalClickInfo(params);
-        if (params.field === "customer_name") {
+        if (params.field === "var_name") {
             for (let i = 0; i < devices.length; i++) {
-                if (devices[i].customer_name === params.value) {
-                    setClients((prev) => [...prev, devices[i]]);
+                if (devices[i].var_name === params.value) {
+                    setVARS((prev) => [...prev, devices[i]]);
                 }
             }
             setModalShow(true);
@@ -51,12 +51,12 @@ function Clients() {
     };
 
     const hideModal = () => {
-        setClients([]);
+        setVARS([]);
         setModalShow(false);
     };
 
     const btnClick = () => {
-        navigate("new-client");
+        navigate("new-var");
     };
 
     return (
@@ -78,18 +78,20 @@ function Clients() {
                                 coloredShadow="info"
                             >
                                 <MDTypography variant="h6" color="white">
-                                    Clients
+                                    Value Added Resellers (VARs)
                                 </MDTypography>
                             </MDBox>
 
                             <MDBox pt={0}>
+
                                 <Datatable
-                                    columns={clientColumns}
-                                    rows={clients}
+                                    columns={varColumns}
+                                    rows={vars}
                                     cellClick={handleOnCellClick}
-                                    btn={"New Client"}
+                                    btn={"New VAR"}
                                     btnClick={btnClick}
                                 />
+
                                 <div>
                                     <p>
                                         <span style={{"color":"transparent"}}>uu</span>
@@ -106,28 +108,6 @@ function Clients() {
                     </Grid>
 
 
-                    <Modal
-                        show={modalShow}
-                        onHide={hideModal}
-                        size="lg"
-                        aria-labelledby="contained-modal-title-vcenter"
-                        centered
-                    >
-                        <Modal.Header closeButton>
-                            <Modal.Title id="contained-modal-title-vcenter">
-                                Client Devices
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <h4>{finalClickInfo.value}</h4>
-                            <Datatable
-                                columns={deviceColumns}
-                                rows={clientDevices}
-                                btn={""}
-                            />
-                        </Modal.Body>
-                    </Modal>
-
 
                 </Grid>
 
@@ -141,4 +121,4 @@ function Clients() {
     );
 }
 
-export default Clients;
+export default Var;

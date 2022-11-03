@@ -52,7 +52,7 @@ export const updateDevice = createAsyncThunk(
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          mid_serial_no: payload.midSno,
+          mid_serial_number: payload.midSno,
           sup_device_no: payload.supNo,
           customer_name: payload.clientName,
           middleware_type: payload.middlewareType,

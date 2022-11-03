@@ -11,7 +11,8 @@ import {Provider} from "react-redux";
 
 // Material Dashboard 2 React Context Provider
 import {MaterialUIControllerProvider} from "context";
-import store from "./redux/store";
+import store from "./app/store";
+
 
 ReactDOM.render(
     <BrowserRouter>
